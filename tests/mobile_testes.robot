@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation    Esse suite tem como finalidade testar o login do aplicativo Swag Labs
-Resource         mobile_resource.robot
+Resource         ${CURDIR}/../resources/mobile_resource.robot
 Test Setup       Abrir o aplicativo
 Test Teardown    Fechar o aplicativo
 
