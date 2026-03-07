@@ -25,8 +25,8 @@ jobs:
 
       - name: Instalar Appium
         run: |
-          npm install -g appium
-          appium driver install uiautomator2
+          npm install -g appium@2
+          appium driver install uiautomator2@2.29.2
 
       - name: Instalar Python e Robot
         run: |
