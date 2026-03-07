@@ -1,17 +1,15 @@
-name: Mobile Tests - Android Emulator
+name: Mobile Tests
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  android-tests:
+  android-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
+      - name: Checkout código
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -20,33 +18,25 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Criar e iniciar Emulator
-        run: |
-          sdkmanager "system-images;android-30;google_apis;x86_64"
-          avdmanager create avd -n test -k "system-images;android-30;google_apis;x86_64" --device "pixel"
-          emulator -avd test -no-audio -no-window -no-snapshot &
-          adb wait-for-device
-          adb shell input keyevent 82
-
-      - name: Instalar Node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '18'
 
       - name: Instalar Appium
-        run: |
-          npm install -g appium
-          appium &
+        run: npm install -g appium
 
       - name: Instalar Python e Robot
         run: |
-          sudo apt-get install python3-pip -y
           pip install robotframework
           pip install robotframework-appiumlibrary
 
-      - name: Rodar testes
-        run: |
-          robot tests/
+      - name: Rodar emulator e testes
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: pixel
+          script: |
+            appium &
+            robot tests/
