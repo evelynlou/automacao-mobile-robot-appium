@@ -33,6 +33,11 @@ jobs:
           pip install robotframework
           pip install robotframework-appiumlibrary
 
+      - name: Baixar APK
+        run: |
+          mkdir -p app
+          wget https://github.com/appium/appium/raw/master/packages/appium/sample-code/apps/ApiDemos-debug.apk -O app/app.apk
+
       - name: Rodar emulator e testes
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
