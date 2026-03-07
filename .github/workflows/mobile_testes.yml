@@ -36,7 +36,7 @@ jobs:
       - name: Baixar APK
         run: |
           mkdir -p app
-          wget https://github.com/appium/appium/raw/master/packages/appium/sample-code/apps/ApiDemos-debug.apk -O app/app.apk
+          wget https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk -O app/app.apk
 
       - name: Rodar emulator e testes
         uses: ReactiveCircus/android-emulator-runner@v2
