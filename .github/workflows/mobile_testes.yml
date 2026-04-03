@@ -47,20 +47,28 @@ jobs:
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
           api-level: 29
-          arch: x86_64
-          profile: pixel
-          emulator-options: -no-window -no-audio -no-boot-anim
+          arch: x86
+          profile: Nexus 6
+          emulator-options: -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect
           disable-animations: true
           script: |
+            echo "Waiting for emulator..."
+            adb wait-for-device
+
+            echo "Aumentando estabilidade do device..."
+            adb shell settings put global window_animation_scale 0
+            adb shell settings put global transition_animation_scale 0
+            adb shell settings put global animator_duration_scale 0
+
             echo "Checking Appium driver..."
             appium driver list --installed
 
             echo "Starting Appium..."
-            appium server > appium.log 2>&1 &
-              
-            echo "Waiting..."
-            sleep 50
-              
+            appium server --base-path /wd/hub > appium.log 2>&1 &
+
+            echo "Esperando Appium subir..."
+            sleep 30
+
             echo "Running tests..."
             robot --outputdir results tests/
 

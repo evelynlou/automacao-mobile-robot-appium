@@ -13,12 +13,14 @@ Abrir o aplicativo
     Open Application
     ...    remote_url=http://127.0.0.1:4723  
     ...    platformName=Android    
-    ...    deviceName=Android Emulator
+    ...    deviceName=emulator-5554
     ...    app=app/app.apk
     ...    automationName=UiAutomator2
     ...    appWaitActivity=com.swaglabsmobileapp.MainActivity
     ...    noSign=${True}
     ...    appWaitDuration=20000
+    ...    uiautomator2ServerInstallTimeout=180000
+    ...    adbExecTimeout=180000
 
 Fechar o aplicativo
     Close All Applications
