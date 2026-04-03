@@ -5,7 +5,7 @@ Library    AppiumLibrary
 
 ${campo_nome}    	    test-Username
 ${campo_senha}    	    test-Password
-${login}                test-Login
+${login}                test-LOGIN
 
 *** Keywords ***
 
@@ -14,36 +14,30 @@ Abrir o aplicativo
     ...    remote_url=http://127.0.0.1:4723  
     ...    platformName=Android    
     ...    deviceName=Android Emulator
-    ...    app=${CURDIR}/../app/app.apk
+    ...    app=app/app.apk
     ...    automationName=UiAutomator2
     ...    appWaitActivity=com.swaglabsmobileapp.MainActivity
+    ...    noSign=${True}
+    ...    appWaitDuration=20000
 
 Fechar o aplicativo
     Close All Applications
 
-Clicar no campo "Username"
-    Sleep    3s
-    Element Should Be Visible    locator=//android.view.ViewGroup[@content-desc="test-LOGIN"]
-    Click Element    accessibility_id=${campo_nome}
-
 Digitar o termo "${nome}" no campo username
+    Wait Until Element Is Visible    accessibility_id=${campo_nome}
+    Click Element    accessibility_id=${campo_nome}
     Input Text    accessibility_id=${campo_nome}    text=${nome}
     
-Clicar no campo "password"
-    Sleep    2s
-    Click Element    accessibility_id=${campo_senha}
 
 Digitar o termo "${senha}" no campo password
+    Sleep    3s
+    Click Element    accessibility_id=${campo_senha}
     Input Text    accessibility_id=${campo_senha}    text=${senha}
 
 Validar login inválido
     Click Element    accessibility_id=${login}
-    Sleep    3s
-    Element Should Be Visible   locator=//android.widget.TextView[@text="Username and password do not match any user in this service."]
-    Capture Page Screenshot      filename=armazenamento 
+    Wait Until Element Is Visible    accessibility_id=test-Error message
 
 Validar login com sucesso
     Click Element    accessibility_id=${login}
-    Sleep    3s
-    Element Should Be Visible    locator=//android.view.ViewGroup[@content-desc="test-Cart drop zone"]/android.view.ViewGroup
-    Capture Page Screenshot      filename=armazenamento 
+    Wait Until Element Is Visible    accessibility_id=test-Cart

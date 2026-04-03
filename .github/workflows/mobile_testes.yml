@@ -23,15 +23,20 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Instalar Appium
         run: |
           npm install -g appium@2
           appium driver install uiautomator2@2.29.2
+          npm install -g wait-on
 
-      - name: Instalar Python e Robot
+      - name: Instalar dependências Python
         run: |
-          pip install robotframework
-          pip install robotframework-appiumlibrary
+          pip install robotframework robotframework-appiumlibrary
 
       - name: Baixar APK
         run: |
@@ -44,6 +49,19 @@ jobs:
           api-level: 30
           arch: x86_64
           profile: pixel
-          script: |
-            appium &
-            robot tests/
+          emulator-options: -no-window -no-audio -no-boot-anim
+          disable-animations: true
+        script: |
+          appium &
+          wait-on http://127.0.0.1:4723
+          robot tests/
+
+      - name: Upload resultados
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: robot-results
+          path: |
+            output.xml
+            log.html
+            report.html
