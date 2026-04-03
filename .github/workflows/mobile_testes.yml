@@ -52,12 +52,15 @@ jobs:
           emulator-options: -no-window -no-audio -no-boot-anim
           disable-animations: true
           script: |
+            echo "Checking Appium driver..."
+            appium driver list --installed
+
             echo "Starting Appium..."
-            appium > appium.log 2>&1 &
-            
-            echo "Waiting a bit..."
-            sleep 15
-            
+            appium server > appium.log 2>&1 &
+              
+            echo "Waiting..."
+            sleep 50
+              
             echo "Running tests..."
             robot --outputdir results tests/
 
