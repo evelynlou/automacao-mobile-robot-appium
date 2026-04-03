@@ -7,6 +7,7 @@ on:
 jobs:
   android-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout código
@@ -46,15 +47,20 @@ jobs:
       - name: Rodar emulator e testes
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: 29
           arch: x86_64
           profile: pixel
           emulator-options: -no-window -no-audio -no-boot-anim
           disable-animations: true
           script: |
-            appium &
-            wait-on http://127.0.0.1:4723
-            robot tests/
+            echo "Starting Appium..."
+            appium > appium.log 2>&1 &
+            
+            echo "Waiting for Appium..."
+            npx wait-on http://127.0.0.1:4723 --timeout 30000
+            
+            echo "Running tests..."
+            robot --outputdir results tests/
 
       - name: Upload resultados
         uses: actions/upload-artifact@v4
@@ -62,6 +68,5 @@ jobs:
         with:
           name: robot-results
           path: |
-            output.xml
-            log.html
-            report.html
+            results/
+            appium.log
