@@ -64,7 +64,7 @@ jobs:
             appium driver list --installed
 
             echo "Starting Appium..."
-            appium server --base-path /wd/hub > appium.log 2>&1 &
+            appium server > appium.log 2>&1 &
 
             echo "Esperando Appium subir..."
             sleep 30
