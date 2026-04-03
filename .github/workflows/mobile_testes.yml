@@ -51,10 +51,10 @@ jobs:
           profile: pixel
           emulator-options: -no-window -no-audio -no-boot-anim
           disable-animations: true
-        script: |
-          appium &
-          wait-on http://127.0.0.1:4723
-          robot tests/
+          script: |
+            appium &
+            wait-on http://127.0.0.1:4723
+            robot tests/
 
       - name: Upload resultados
         uses: actions/upload-artifact@v4
